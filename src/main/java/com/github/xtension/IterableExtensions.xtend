@@ -1,12 +1,14 @@
 package com.github.xtension
 
 import java.util.Comparator
+import java.util.Iterator
 import java.util.List
 import java.util.Map
 import com.google.common.base.Optional
 import com.google.common.collect.AbstractIterator
 import com.google.common.collect.FluentIterable
 import com.google.common.collect.Iterables
+import com.google.common.collect.Iterators
 import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import com.google.common.collect.Ordering
@@ -333,9 +335,6 @@ final class IterableExtensions {
 	 * <p>For example:
 	 * <p>{@code #[1,2,3,4,5,1].takeWhile[it <= 3]} returns {@code #[1,2,3]}
 	 *
-	 * <p>Note: might return different results for different runs, unless the underlying iterable
-	 * is ordered.
-	 *
 	 * <p>The source iterator is not polled until necessary. The resulting iterable's iterator does
 	 * not support {@code remove()}.
 	 */
@@ -362,5 +361,56 @@ final class IterableExtensions {
 		]
 
 		result
+	}
+
+	/**
+	 * Drops longest prefix of elements that satisfy a predicate.
+	 * <p>For example:
+	 * <p>{@code #[1,2,3,4,5,1].dropWhile[it <= 3]} returns {@code #[4,5,1]}
+	 *
+	 * <p>The source iterator is not polled until necessary. The resulting iterable's iterator does
+	 * not support {@code remove()}.
+	 */
+	def static <T> Iterable<T> dropWhile(Iterable<T> iterable, (T) => boolean predicate) {
+		val FluentIterable<T> result = [|
+			val delegate = iterable.iterator
+
+			val firstFound = delegate.iterateWhile(predicate)
+
+			// TODO The returned iterator should support remove() if the
+			// delegate iterator supports it
+			if (firstFound.key) {
+				val AbstractIterator<T> iterator = [|
+					if (delegate.hasNext) {
+						delegate.next
+					} else {
+						self.endOfData
+					}
+				]
+
+				Iterators::concat(#[firstFound.value].iterator, iterator)
+			} else {
+				Iterators::emptyIterator
+			}
+		]
+
+		result
+	}
+
+	/**
+	 * Iterates while a predicate is satisfied.
+	 *
+	 * @return {@code (true -> elem)}, where {@code elem} is the first element that does not satisfy the predicate,
+	 * or {@code (false -> null)}, if all elements satisfy the predicate.
+	 */
+	private def static <T> Pair<Boolean, T> iterateWhile(Iterator<T> iterator, (T) => boolean predicate) {
+		while (iterator.hasNext) {
+			val next = iterator.next
+			if (!predicate.apply(next)) {
+				return true -> next
+			}
+		}
+
+		false -> null
 	}
 }
