@@ -327,4 +327,40 @@ final class IterableExtensions {
 	def static <T> Iterable<List<T>> grouped(Iterable<T> iterable, int size) {
 		Iterables::partition(iterable, size)
 	}
+
+	/**
+	 * Takes longest prefix of elements that satisfy a predicate.
+	 * <p>For example:
+	 * <p>{@code #[1,2,3,4,5,1].takeWhile[it <= 3]} returns {@code #[1,2,3]}
+	 *
+	 * <p>Note: might return different results for different runs, unless the underlying iterable
+	 * is ordered.
+	 *
+	 * <p>The source iterator is not polled until necessary. The resulting iterable's iterator does
+	 * not support {@code remove()}.
+	 */
+	def static <T> Iterable<T> takeWhile(Iterable<T> iterable, (T) => boolean predicate) {
+		val FluentIterable<T> result = [|
+			val delegate = iterable.iterator
+
+			// TODO The returned iterator should support remove() if the
+			// delegate iterator supports it
+			val AbstractIterator<T> iterator = [|
+				if (delegate.hasNext) {
+					val elem = delegate.next
+					if (predicate.apply(elem)) {
+						elem
+					} else {
+						self.endOfData
+					}
+				} else {
+					self.endOfData
+				}
+			]
+
+			iterator
+		]
+
+		result
+	}
 }
