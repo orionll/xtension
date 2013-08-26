@@ -1,9 +1,11 @@
 package com.github.xtension
 
+import java.util.Collections
 import java.util.Comparator
 import java.util.Iterator
 import java.util.List
 import java.util.Map
+import com.google.common.annotations.Beta
 import com.google.common.base.Optional
 import com.google.common.collect.AbstractIterator
 import com.google.common.collect.FluentIterable
@@ -12,6 +14,8 @@ import com.google.common.collect.Iterators
 import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import com.google.common.collect.Ordering
+import com.google.common.math.IntMath
+import com.google.common.math.LongMath
 import org.eclipse.xtext.xbase.lib.internal.BooleanFunctionDelegate
 
 import static extension com.github.xtension.MapExtensions.*
@@ -388,13 +392,30 @@ final class IterableExtensions {
 					}
 				]
 
-				Iterators::concat(#[firstFound.value].iterator, iterator)
+				Iterators::concat(Iterators::singletonIterator(firstFound.value), iterator)
 			} else {
 				Iterators::emptyIterator
 			}
 		]
 
 		result
+	}
+
+	/**
+	 * Returns an iterable containing the elements greater than or equal to index {@code from} extending
+	 * up to (but not including) index {@code until} of this iterable.
+	 *
+	 * <p>The source iterator is not polled until necessary. The resulting iterable's iterator does
+	 * not support {@code remove()}.
+	 */
+	def static <T> Iterable<T> slice(Iterable<T> iterable, int from, int until) {
+		val lo = Math::max(from, 0)
+
+		if (until <= lo) {
+			Collections::emptyList
+		} else {
+			iterable.drop(lo).take(until - lo)
+		}
 	}
 
 	/**
@@ -412,5 +433,154 @@ final class IterableExtensions {
 		}
 
 		false -> null
+	}
+
+	/**
+	 * Returns an iterable containing cumulative results of applying the operator going left to right.
+	 * <p>For example:
+	 * <p>{@code (1..5).scan(0)[x, y | x + y]} returns {@code [0, 1, 3, 6, 10, 15]}
+	 *
+	 * <p>The source iterator is not polled until necessary. The resulting iterable's iterator does
+	 * not support {@code remove()}.
+	 */
+	def static <T, U> Iterable<U> scan(Iterable<T> iterable, U seed, (U, T) => U function) {
+		val FluentIterable<U> result = [|
+			val delegate = iterable.iterator
+
+			// An array is created here because closures can not use var
+			val Object[] prevValue = newArrayOfSize(1)
+			prevValue.set(0, seed)
+
+			val AbstractIterator<U> iterator = [|
+				if (delegate.hasNext) {
+					val nextValue = function.apply(prevValue.get(0) as U, delegate.next)
+					prevValue.set(0, nextValue)
+					nextValue
+				} else {
+					self.endOfData
+				}
+			]
+
+			Iterators::concat(Iterators::singletonIterator(seed), iterator)
+		]
+
+		result
+	}
+
+	/**
+	 * Finds the index of the first element that satisfies a predicate.
+	 *
+	 * @return the index of the first element of this iterable that satisfies the predicate,
+	 * or {@code -1}, if no elements satisfy the predicate.
+	 */
+	def static <T> int indexWhere(Iterable<T> iterable, (T) => boolean predicate) {
+		iterable.indexWhere(0, predicate)
+	}
+
+	/**
+	 * Finds the index of the first element that satisfies a predicate after or at some start index.
+	 *
+	 * @return the index {@code >= from} of the first element of this iterable that satisfies the predicate,
+	 * or {@code -1}, if no elements satisfy the predicate.
+	 */
+	def static <T> int indexWhere(Iterable<T> iterable, int from, (T) => boolean predicate) {
+
+		val drop = if (from == 0) iterable else iterable.drop(from)
+		var i = from
+
+		for (T elem : drop) {
+			if (predicate.apply(elem)) {
+				return i
+			}
+
+			i = i + 1
+		}
+
+		return -1
+	}
+
+	/**
+	 * Finds the index of the last element that satisfies a predicate.
+	 *
+	 * @return the index of the last element of this iterable that satisfies the predicate,
+	 * or {@code -1}, if no elements satisfy the predicate.
+	 */
+	def static <T> int lastIndexWhere(Iterable<T> iterable, (T) => boolean predicate) {
+		iterable.lastIndexWhere(iterable.size - 1, predicate)
+	}
+
+	/**
+	 * Finds the index of the last element that satisfies a predicate before or at some end index.
+	 *
+	 * @return the index {@code <= end} of the last element of this iterable that satisfies the predicate,
+	 * or {@code -1}, if no elements satisfy the predicate.
+	 */
+	def static <T> int lastIndexWhere(Iterable<T> iterable, int end, (T) => boolean predicate) {
+		var i = 0
+		var last = -1
+
+		for (T elem : iterable) {
+			if (i > end) {
+				return last
+			}
+			if (predicate.apply(elem)) {
+				last = i
+			}
+
+			i = i + 1
+		}
+
+		last
+	}
+
+	/**
+	 * Returns an iterable which traverses the possible n-element combinations of this iterable.
+	 */
+	def static <T> Iterable<List<T>> combinations(Iterable<T> iterable, int n) {
+		if (n < 0 || n > iterable.size) {
+			Collections::emptyList
+		} else {
+			val FluentIterable<List<T>> result = [| new CombinationsItr(iterable, n) ]
+			result
+		}
+	}
+
+	/**
+	 * Sums up the elements of this iterable.
+	 */
+	@Beta
+	def static<T> int sumInt(Iterable<Integer> iterable) {
+		var sum = 0
+		for (int i : iterable) {
+			sum = IntMath::checkedAdd(sum, i)
+		}
+
+		sum
+	}
+
+	/**
+	 * Sums up the elements of this iterable.
+	 */
+	@Beta
+	def static<T> long sumLong(Iterable<Long> iterable) {
+		var sum = 0L
+		for (long i : iterable) {
+			sum = LongMath::checkedAdd(sum, i)
+		}
+
+		sum
+	}
+
+	/**
+	 * Sums up the elements of this iterable.
+	 */
+	@Beta
+	def static<T> double sumDouble(Iterable<Double> iterable) {
+		var sum = 0.0
+		for (double i : iterable) {
+			sum = sum + i
+		}
+
+		sum
 	}
 }
