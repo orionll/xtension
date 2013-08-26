@@ -1,5 +1,6 @@
 package com.github.xtension;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -85,7 +86,7 @@ class CombinationsItr<T> implements Iterator<List<T>> {
 			}
 		}
 
-		return res;
+		return Collections.unmodifiableList(res);
 	}
 
 	/**

@@ -158,7 +158,7 @@ final class IterableExtensions {
 		val List<T> a = Lists::newArrayListWithCapacity(size)
 		val List<U> b = Lists::newArrayListWithCapacity(size)
 
-		for (Pair<T, U> pair : iterable) {
+		for (pair : iterable) {
 			a.add(pair.key)
 			b.add(pair.value)
 		}
@@ -488,7 +488,7 @@ final class IterableExtensions {
 		val drop = if (from == 0) iterable else iterable.drop(from)
 		var i = from
 
-		for (T elem : drop) {
+		for (elem : drop) {
 			if (predicate.apply(elem)) {
 				return i
 			}
@@ -519,7 +519,7 @@ final class IterableExtensions {
 		var i = 0
 		var last = -1
 
-		for (T elem : iterable) {
+		for (elem : iterable) {
 			if (i > end) {
 				return last
 			}
@@ -551,7 +551,7 @@ final class IterableExtensions {
 	@Beta
 	def static<T> int sumInt(Iterable<Integer> iterable) {
 		var sum = 0
-		for (int i : iterable) {
+		for (i : iterable) {
 			sum = IntMath::checkedAdd(sum, i)
 		}
 
@@ -564,7 +564,7 @@ final class IterableExtensions {
 	@Beta
 	def static<T> long sumLong(Iterable<Long> iterable) {
 		var sum = 0L
-		for (long i : iterable) {
+		for (i : iterable) {
 			sum = LongMath::checkedAdd(sum, i)
 		}
 
@@ -577,7 +577,7 @@ final class IterableExtensions {
 	@Beta
 	def static<T> double sumDouble(Iterable<Double> iterable) {
 		var sum = 0.0
-		for (double i : iterable) {
+		for (i : iterable) {
 			sum = sum + i
 		}
 
