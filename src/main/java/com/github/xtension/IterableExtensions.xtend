@@ -444,10 +444,19 @@ final class IterableExtensions {
 	}
 
 	/**
-	 * Splits this iterable into two at a given position. Equivalent to (iterable.take(n) -> iterable.drop(n))
+	 * Splits this iterable into two at a given position. Equivalent to
+	 * {@code (iterable.take(n) -> iterable.drop(n))}
 	 */
 	def static <T> Pair<Iterable<T>, Iterable<T>> splitAt(Iterable<T> iterable, int n) {
 		iterable.take(n) -> iterable.drop(n)
+	}
+
+	/**
+	 * Splits this iterable into a prefix/suffix pair according to a predicate. Equivalent to
+	 * {@code (iterable.takeWhile(predicate) -> iterable.dropWhile(predicate))}
+	 */
+	def static <T> Pair<Iterable<T>, Iterable<T>> span(Iterable<T> iterable, (T) => boolean predicate) {
+		iterable.takeWhile(predicate) -> iterable.dropWhile(predicate)
 	}
 
 	/**
