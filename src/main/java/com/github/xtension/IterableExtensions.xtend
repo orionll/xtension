@@ -304,10 +304,11 @@ final class IterableExtensions {
 	 */
 	def static <T, K> Map<K, List<T>> groupBy(Iterable<T> iterable, (T) => K function) {
 		val map = Maps::<K, List<T>>newHashMap
+		val newArrayList = [| newArrayList]
 
 		for (elem : iterable) {
 			val key = function.apply(elem)
-			map.getOrElseUpdate(key, Lists::newArrayList).add(elem)
+			map.getOrElseUpdate(key, newArrayList).add(elem)
 		}
 
 		for (key : map.keySet) {
