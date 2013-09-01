@@ -317,7 +317,31 @@ final class IterableExtensions {
 
 		map.unmodifiableView
 	}
-	
+
+	/**
+	 * Partitions this iterable into two lists according to a predicate.
+	 *
+	 * <p>The resulting lists are unmodifiable.
+	 *
+	 * @return a pair of lists: the first list consists of all elements that satisfy the predicate and
+	 * 	the second list consists of all elements that don't. The relative order of the elements in the
+	 *	resulting lists is the same as in the original list.
+	 */
+	def static <T> Pair<List<T>, List<T>> partition(Iterable<T> iterable, (T) => boolean predicate) {
+		val listTrue = Lists::newArrayList
+		val listFalse = Lists::newArrayList
+
+		for (elem : iterable) {
+			if (predicate.apply(elem)) {
+				listTrue.add(elem)
+			} else {
+				listFalse.add(elem)
+			}
+		}
+
+		listTrue.unmodifiableView -> listFalse.unmodifiableView
+	}
+
 	/**
 	 * Divides this iterable into unmodifiable sublists of the given size (the final list may be
 	 * smaller). For example, grouping an iterable containing {@code [a, b, c, d, e]} with a group
