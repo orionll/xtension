@@ -444,6 +444,13 @@ final class IterableExtensions {
 	}
 
 	/**
+	 * Splits this iterable into two at a given position. Equivalent to (iterable.take(n) -> iterable.drop(n))
+	 */
+	def static <T> Pair<Iterable<T>, Iterable<T>> splitAt(Iterable<T> iterable, int n) {
+		iterable.take(n) -> iterable.drop(n)
+	}
+
+	/**
 	 * Iterates while a predicate is satisfied.
 	 *
 	 * @return {@code (true -> elem)}, where {@code elem} is the first element that does not satisfy the predicate,
