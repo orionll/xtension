@@ -359,6 +359,11 @@ final class IterableExtensions {
 		Iterables::partition(iterable, size)
 	}
 
+	def static <T> Iterable<List<T>> sliding(Iterable<T> iterable, int size) {
+		val FluentIterable<List<T>> result = [| new SlidingItr(iterable.iterator, size) ]
+		result
+	}
+
 	/**
 	 * Takes longest prefix of elements that satisfy a predicate.
 	 * <p>For example:
