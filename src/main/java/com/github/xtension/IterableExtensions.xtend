@@ -18,6 +18,8 @@ import com.google.common.math.IntMath
 import com.google.common.math.LongMath
 import org.eclipse.xtext.xbase.lib.internal.BooleanFunctionDelegate
 
+import static com.google.common.base.Preconditions.*
+
 import static extension com.github.xtension.MapExtensions.*
 
 final class IterableExtensions {
@@ -359,7 +361,17 @@ final class IterableExtensions {
 		Iterables::partition(iterable, size)
 	}
 
+	/**
+	 * Groups elements of this iterable in fixed size blocks by passing a "sliding window" over them
+	 * (as opposed to partitioning them, as is done in {@link #grouped}.)
+	 *
+	 * <p>Iterators returned by the returned iterable do not support {@code remove()}.
+	 *
+	 * @return an iterable of unmodifiable lists of size {@code size}, except the last and the only element
+	 * will be truncated if there are fewer elements than {@code size}.
+	 */
 	def static <T> Iterable<List<T>> sliding(Iterable<T> iterable, int size) {
+		checkArgument(size >= 1, "Illegal sliding size: %s", size)
 		val FluentIterable<List<T>> result = [| new SlidingItr(iterable.iterator, size) ]
 		result
 	}
