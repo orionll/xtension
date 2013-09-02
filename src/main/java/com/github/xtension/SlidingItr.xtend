@@ -1,8 +1,8 @@
 package com.github.xtension
 
-import java.util.ArrayDeque
 import java.util.ArrayList
 import java.util.Iterator
+import java.util.LinkedList
 import java.util.List
 
 import static com.google.common.base.Preconditions.*
@@ -13,7 +13,7 @@ package class SlidingItr<B> extends AbstractIterator<List<B>> {
 
 	val Iterator<B> self
 	val int size
-	var buffer = new ArrayDeque<B>
+	var buffer = new LinkedList<B> // ArrayDeque is much faster, but does not support null entries :(
 	var filled = false
 
 	new(Iterator<B> self, int size) {
