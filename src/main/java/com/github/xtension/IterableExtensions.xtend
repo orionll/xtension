@@ -472,12 +472,13 @@ final class IterableExtensions {
 	 * not support {@code remove()}.
 	 */
 	def static <T> Iterable<T> slice(Iterable<T> iterable, int from, int until) {
-		val lo = Math::max(from, 0)
+		checkArgument(from >= 0, "Argument 'from' was negative: %s", from)
+		checkArgument(until >= 0, "Argument 'until' was negative: %s", until)
 
-		if (until <= lo) {
+		if (until <= from) {
 			Collections::emptyList
 		} else {
-			iterable.drop(lo).take(until - lo)
+			iterable.drop(from).take(until - from)
 		}
 	}
 
