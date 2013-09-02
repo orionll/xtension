@@ -499,7 +499,7 @@ final class IterableExtensions {
 		if (until <= from) {
 			Collections::emptyList
 		} else {
-			iterable.drop(from).take(until - from)
+			FluentIterable::from(iterable).skip(from).limit(until - from)
 		}
 	}
 
@@ -508,7 +508,7 @@ final class IterableExtensions {
 	 * {@code (iterable.take(n) -> iterable.drop(n))}
 	 */
 	def static <T> Pair<Iterable<T>, Iterable<T>> splitAt(Iterable<T> iterable, int n) {
-		iterable.take(n) -> iterable.drop(n)
+		Iterables::limit(iterable, n) -> Iterables::skip(iterable, n)
 	}
 
 	/**
@@ -586,7 +586,7 @@ final class IterableExtensions {
 	 */
 	def static <T> int indexWhere(Iterable<T> iterable, int from, (T) => boolean predicate) {
 
-		val drop = if (from == 0) iterable else iterable.drop(from)
+		val drop = if (from == 0) iterable else Iterables::skip(iterable, from)
 		var i = from
 
 		for (elem : drop) {
