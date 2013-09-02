@@ -444,6 +444,27 @@ final class IterableExtensions {
 	}
 
 	/**
+	 * Returns an iterable containing the last {@code n} elements of this iterable.
+	 *
+	 * <p>The source iterator is not polled until necessary. The resulting iterable's iterator does
+	 * not support {@code remove()}.
+	 */
+	def static <T> Iterable<T> takeRight(Iterable<T> iterable, int n) {
+		checkArgument(n >= 0, "Cannot take a negative number of elements. Argument 'n' was: %s", n)
+
+		val FluentIterable<T> result = [|
+			val size = iterable.size
+			if (size <= n) {
+				iterable.iterator
+			} else {
+				Iterables::skip(iterable, size - n).iterator
+			}
+		]
+
+		result
+	}
+
+	/**
 	 * Returns an iterable containing the elements greater than or equal to index {@code from} extending
 	 * up to (but not including) index {@code until} of this iterable.
 	 *

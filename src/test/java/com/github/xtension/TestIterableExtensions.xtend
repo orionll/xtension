@@ -10,6 +10,17 @@ import static extension com.github.xtension.IterableExtensions.*
 
 class TestIterableExtensions {
 	@Test
+	def void takeRight() {
+		val list = #[1, 2, 3]
+
+		assertThat(list.takeRight(0)).isEmpty
+		assertThat(list.takeRight(1)).containsExactly(3)
+		assertThat(list.takeRight(2)).containsExactly(2, 3)
+		assertThat(list.takeRight(3)).containsExactly(1, 2, 3)
+		assertThat(list.takeRight(4)).containsExactly(1, 2, 3)
+	}
+
+	@Test
 	def void sliding() {
 		val list = #[1, 2, 3]
 
