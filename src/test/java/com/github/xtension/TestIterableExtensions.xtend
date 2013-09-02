@@ -21,6 +21,17 @@ class TestIterableExtensions {
 	}
 
 	@Test
+	def void dropRight() {
+		val list = #[1, 2, 3]
+
+		assertThat(list.dropRight(0)).containsExactly(1, 2, 3)
+		assertThat(list.dropRight(1)).containsExactly(1, 2)
+		assertThat(list.dropRight(2)).containsExactly(1)
+		assertThat(list.dropRight(3)).isEmpty
+		assertThat(list.dropRight(4)).isEmpty
+	}
+
+	@Test
 	def void sliding() {
 		val list = #[1, 2, 3]
 
