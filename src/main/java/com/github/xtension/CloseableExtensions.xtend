@@ -29,7 +29,7 @@ class CloseableExtensions {
 			mainThrowable = t
 			throw t
 		} finally {
-			if (mainThrowable == null) {
+			if (mainThrowable === null) {
 				resource.close
 			} else {
 				try {
