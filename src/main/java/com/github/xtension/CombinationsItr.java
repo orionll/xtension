@@ -116,9 +116,9 @@ class CombinationsItr<T> implements Iterator<List<T>> {
 					}
 				});
 
-		Pair<List<T>, List<Integer>> esIs = IterableExtensions.unzip(sorted);
-		List<T> elms = esIs.getKey();
-		List<Integer> is = esIs.getValue();
+		Pair<Iterable<T>, Iterable<Integer>> esIs = IterableExtensions.unzip(sorted);
+		List<T> elms = Lists.newArrayList(esIs.getKey());
+		List<Integer> is = Lists.newArrayList(esIs.getValue());
 
 		int[] cnts = new int[m.size()];
 		for (int i : is) {

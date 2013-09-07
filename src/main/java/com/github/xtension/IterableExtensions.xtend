@@ -130,17 +130,28 @@ final class IterableExtensions {
 	 * Returns an iterable formed from this iterable and another iterable by combining
 	 * corresponding elements in pairs. If one of the two collections is longer than the other,
 	 * its remaining elements are ignored. The source iterators are not polled until necessary.
-	 * 
+	 *
 	 * <p>The resulting iterable's iterator does not support {@code remove()}.
 	 */
 	def static <T, U> Iterable<Pair<T, U>> zip(Iterable<T> a, Iterable<U> b) {
-		val FluentIterable<Pair<T, U>> result = [|
+		zip(a, b, [x, y | x -> y])
+	}
+
+	/**
+	 * Returns an iterable formed from this iterable and another iterable by combining
+	 * corresponding elements according to an operator. If one of the two collections is longer than the other,
+	 * its remaining elements are ignored. The source iterators are not polled until necessary.
+	 *
+	 * <p>The resulting iterable's iterator does not support {@code remove()}.
+	 */
+	def static <T, U, R> Iterable<R> zip(Iterable<T> a, Iterable<U> b, (T, U) => R operator) {
+		val FluentIterable<R> result = [|
 			val iterator1 = a.iterator
 			val iterator2 = b.iterator
 
-			val AbstractIterator<Pair<T, U>> iterator = [|
+			val AbstractIterator<R> iterator = [|
 				if (iterator1.hasNext && iterator2.hasNext) {
-					iterator1.next -> iterator2.next
+					operator.apply(iterator1.next, iterator2.next)
 				} else { 
 					self.endOfData
 				}
@@ -148,29 +159,29 @@ final class IterableExtensions {
 
 			iterator
 		]
-		
+
 		result
 	}
 
 	/**
 	 * Converts this iterable of pairs into two lists of the first and second
 	 * half of each pair.
-	 * 
+	 *
 	 * <p>The resulting lists are unmodifiable.
 	 */
-	def static <T, U> Pair<List<T>, List<U>> unzip(Iterable<Pair<T, U>> iterable) {
-		val size = iterable.size
-		val List<T> a = Lists::newArrayListWithCapacity(size)
-		val List<U> b = Lists::newArrayListWithCapacity(size)
-
-		for (pair : iterable) {
-			a.add(pair.key)
-			b.add(pair.value)
-		}
-
-		a.unmodifiableView -> b.unmodifiableView
+	def static <T, U> Pair<Iterable<T>, Iterable<U>> unzip(Iterable<Pair<T, U>> iterable) {
+		iterable.map[key] -> iterable.map[value]
 	}
-	
+
+	/**
+	 * Converts this iterable into two lists by applying a function to each element of this iterable.
+	 *
+	 * <p>The resulting lists are unmodifiable.
+	 */
+	def static <T, U, S> Pair<Iterable<T>, Iterable<U>> unzip(Iterable<S> iterable, (S) => Pair<T, U> function) {
+		iterable.map[function.apply(it).key] -> iterable.map[function.apply(it).value]
+	}
+
 	/**
 	 * Zips this iterable with its indices.
 	 * 
