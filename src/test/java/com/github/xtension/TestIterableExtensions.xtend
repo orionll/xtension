@@ -42,6 +42,12 @@ class TestIterableExtensions {
 	}
 
 	@Test
+	def void indices() {
+		assertThat(#[1, 2, 3].indices).containsExactly(0, 1, 2)
+		assertThat(#[].indices).isEmpty
+	}
+
+	@Test
 	def void combinations() {
 		val list = #[1, 2, 3]
 
