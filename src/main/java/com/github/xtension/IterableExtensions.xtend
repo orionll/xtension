@@ -16,7 +16,6 @@ import com.google.common.collect.Maps
 import com.google.common.collect.Ordering
 import com.google.common.math.IntMath
 import com.google.common.math.LongMath
-import org.eclipse.xtext.xbase.lib.internal.BooleanFunctionDelegate
 
 import static com.google.common.base.Preconditions.*
 
@@ -57,7 +56,7 @@ final class IterableExtensions {
 	 * is matched in this fluent iterable, a {@link NullPointerException} will be thrown.
 	 */
 	def static <T> Optional<T> findFirstOptional(Iterable<T> iterable, (T) => boolean predicate) {
-		Iterables::tryFind(iterable, new BooleanFunctionDelegate<T>(predicate))
+		Iterables::tryFind(iterable, predicate)
 	}
 
 	/**
@@ -67,9 +66,13 @@ final class IterableExtensions {
 	 * <p>For example:
 	 * 
 	 * <p>{@code val words = lines.flatMap[split("\\W+").toList]}
+	 *
+	 * <p>The returned iterable's iterator supports {@code remove()} if this
+	 * function-returned iterables' iterator does. After a successful {@code remove()} call,
+	 * the returned iterable no longer contains the corresponding element.
 	 */
 	def static <T, U> Iterable<U> flatMap(Iterable<T> iterable, (T) => Iterable<? extends U> function) {
-		iterable.map(function).flatten
+		FluentIterable::from(iterable).transformAndConcat(function)
 	}
 
 	/**
