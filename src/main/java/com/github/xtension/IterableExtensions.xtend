@@ -76,23 +76,6 @@ final class IterableExtensions {
 	}
 
 	/**
-	 * The same as {@link org.eclipse.xtext.xbase.lib.IterableExtensions#fold} but an accumulator
-	 * function does not return a value. Instead the accumulator reuses the existing result and modifies it
-	 * instead of returning a new result (which can be expensive). Therefore, {@code seed} should be
-	 * a modifiable data structure (e.g. {@code ArrayList}, {@code HashMap}, ...).
-	 */
-	@Beta
-	def static <T, R> R collect(Iterable<T> iterable, R seed, (R, T) => void accumulator) {
-		val result = seed
-
-		for (elem : iterable) {
-			accumulator.apply(result, elem)
-		}
-
-		result
-	}
-
-	/**
 	 * Counts the number of elements in this iterable which satisfy a predicate.
 	 */
 	def static <T> int count(Iterable<T> iterable, (T) => boolean predicate) {
