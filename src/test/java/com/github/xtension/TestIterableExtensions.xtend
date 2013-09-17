@@ -1,7 +1,6 @@
 package com.github.xtension
 
 import java.util.Collections
-
 import org.junit.Test
 
 import static org.assertj.core.api.Assertions.*
@@ -32,6 +31,26 @@ class TestIterableExtensions {
 	}
 
 	@Test
+	def void takeWhile() {
+		val list = #[1, 2, 3]
+
+		assertThat(list.takeWhile[it < 1]).isEmpty
+		assertThat(list.takeWhile[it < 2]).containsExactly(1)
+		assertThat(list.takeWhile[it < 3]).containsExactly(1, 2)
+		assertThat(list.takeWhile[it < 4]).containsExactly(1, 2, 3)
+	}
+
+	@Test
+	def void dropWhile() {
+		val list = #[1, 2, 3]
+
+		assertThat(list.dropWhile[it < 1]).containsExactly(1, 2, 3)
+		assertThat(list.dropWhile[it < 2]).containsExactly(2, 3)
+		assertThat(list.dropWhile[it < 3]).containsExactly(3)
+		assertThat(list.dropWhile[it < 4]).isEmpty
+	}
+
+	@Test
 	def void sliding() {
 		val list = #[1, 2, 3]
 
@@ -57,5 +76,10 @@ class TestIterableExtensions {
 		assertThat(list.combinations(2)).containsOnly(#[1, 2], #[2, 3], #[1, 3])
 		assertThat(list.combinations(3)).containsOnly(list)
 		assertThat(list.combinations(4)).isEmpty
+	}
+
+	@Test
+	def void zip() {
+		assertThat(#[1,2,3].zip(#['a','b','c'])[ a, b | a + b ]).containsExactly('1a', '2b', '3c')
 	}
 }

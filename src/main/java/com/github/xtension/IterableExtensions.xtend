@@ -145,22 +145,8 @@ final class IterableExtensions {
 	 * <p>The resulting iterable's iterator does not support {@code remove()}.
 	 */
 	def static <T, U, R> Iterable<R> zip(Iterable<T> a, Iterable<U> b, (T, U) => R operator) {
-		val FluentIterable<R> result = [|
-			val iterator1 = a.iterator
-			val iterator2 = b.iterator
-
-			val AbstractIterator<R> iterator = [|
-				if (iterator1.hasNext && iterator2.hasNext) {
-					operator.apply(iterator1.next, iterator2.next)
-				} else { 
-					self.endOfData
-				}
-			]
-
-			iterator
-		]
-
-		result
+		val FluentIterable<R> iterable = [| new ZipItr(a.iterator, b.iterator, operator)]
+		iterable
 	}
 
 	/**
@@ -399,27 +385,7 @@ final class IterableExtensions {
 	 * not support {@code remove()}.
 	 */
 	def static <T> Iterable<T> takeWhile(Iterable<T> iterable, (T) => boolean predicate) {
-		val FluentIterable<T> result = [|
-			val delegate = iterable.iterator
-
-			// TODO The returned iterator should support remove() if the
-			// delegate iterator supports it
-			val AbstractIterator<T> iterator = [|
-				if (delegate.hasNext) {
-					val elem = delegate.next
-					if (predicate.apply(elem)) {
-						elem
-					} else {
-						self.endOfData
-					}
-				} else {
-					self.endOfData
-				}
-			]
-
-			iterator
-		]
-
+		val FluentIterable<T> result = [| new TakeWhileItr(iterable.iterator, predicate)]
 		result
 	}
 
@@ -432,28 +398,7 @@ final class IterableExtensions {
 	 * not support {@code remove()}.
 	 */
 	def static <T> Iterable<T> dropWhile(Iterable<T> iterable, (T) => boolean predicate) {
-		val FluentIterable<T> result = [|
-			val delegate = iterable.iterator
-
-			val firstFound = delegate.iterateWhile(predicate)
-
-			// TODO The returned iterator should support remove() if the
-			// delegate iterator supports it
-			if (firstFound.key) {
-				val AbstractIterator<T> iterator = [|
-					if (delegate.hasNext) {
-						delegate.next
-					} else {
-						self.endOfData
-					}
-				]
-
-				Iterators::concat(Iterators::singletonIterator(firstFound.value), iterator)
-			} else {
-				Iterators::emptyIterator
-			}
-		]
-
+		val FluentIterable<T> result = [| new DropWhileItr(iterable.iterator, predicate) ]
 		result
 	}
 
@@ -531,23 +476,6 @@ final class IterableExtensions {
 	 */
 	def static <T> Pair<Iterable<T>, Iterable<T>> span(Iterable<T> iterable, (T) => boolean predicate) {
 		iterable.takeWhile(predicate) -> iterable.dropWhile(predicate)
-	}
-
-	/**
-	 * Iterates while a predicate is satisfied.
-	 *
-	 * @return {@code (true -> elem)}, where {@code elem} is the first element that does not satisfy the predicate,
-	 * or {@code (false -> null)}, if all elements satisfy the predicate.
-	 */
-	private def static <T> Pair<Boolean, T> iterateWhile(Iterator<T> iterator, (T) => boolean predicate) {
-		while (iterator.hasNext) {
-			val next = iterator.next
-			if (!predicate.apply(next)) {
-				return true -> next
-			}
-		}
-
-		false -> null
 	}
 
 	/**
