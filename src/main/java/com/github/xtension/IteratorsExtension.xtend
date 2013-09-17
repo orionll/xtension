@@ -35,4 +35,13 @@ final class IteratorsExtensions {
 	def static <T> Iterator<T> dropWhile(Iterator<T> iterator, (T) => boolean predicate) {
 		new DropWhileItr(iterator, predicate)
 	}
+
+	/**
+	 * Returns an iterable containing cumulative results of applying the operator going left to right.
+	 *
+	 * <p>The resulting iterator does not support {@code remove()}.
+	 */
+	def static <T, U> Iterator<U> scan(Iterator<T> iterator, U seed, (U, T) => U function) {
+		new ScanItr(iterator, seed, function)
+	}
 }

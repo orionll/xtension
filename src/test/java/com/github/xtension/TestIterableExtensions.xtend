@@ -61,6 +61,12 @@ class TestIterableExtensions {
 	}
 
 	@Test
+	def void scan() {
+		assertThat(#[].scan(0, [ int prev, int next | prev + next])).containsExactly(0)
+		assertThat(#[1, 2, 3].scan(0, [ prev, next | prev + next])).containsExactly(0, 1, 3, 6)
+	}
+
+	@Test
 	def void indices() {
 		assertThat(#[1, 2, 3].indices).containsExactly(0, 1, 2)
 		assertThat(#[].indices).isEmpty

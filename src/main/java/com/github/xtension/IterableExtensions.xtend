@@ -7,7 +7,6 @@ import java.util.List
 import java.util.Map
 import com.google.common.annotations.Beta
 import com.google.common.base.Optional
-import com.google.common.collect.AbstractIterator
 import com.google.common.collect.FluentIterable
 import com.google.common.collect.Iterables
 import com.google.common.collect.Iterators
@@ -487,26 +486,7 @@ final class IterableExtensions {
 	 * not support {@code remove()}.
 	 */
 	def static <T, U> Iterable<U> scan(Iterable<T> iterable, U seed, (U, T) => U function) {
-		val FluentIterable<U> result = [|
-			val delegate = iterable.iterator
-
-			// An array is created here because closures can not use var
-			val Object[] prevValue = newArrayOfSize(1)
-			prevValue.set(0, seed)
-
-			val AbstractIterator<U> iterator = [|
-				if (delegate.hasNext) {
-					val nextValue = function.apply(prevValue.get(0) as U, delegate.next)
-					prevValue.set(0, nextValue)
-					nextValue
-				} else {
-					self.endOfData
-				}
-			]
-
-			Iterators::concat(Iterators::singletonIterator(seed), iterator)
-		]
-
+		val FluentIterable<U> result = [| new ScanItr(iterable.iterator, seed, function)]
 		result
 	}
 
