@@ -2,7 +2,7 @@ package com.github.xtension
 
 import java.util.Iterator
 
-final class IteratorsExtensions {
+final class IteratorExtensions {
 
 	private new() {
 	}
