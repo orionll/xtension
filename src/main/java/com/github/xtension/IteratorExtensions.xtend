@@ -1,10 +1,21 @@
 package com.github.xtension
 
+import com.google.common.collect.Iterators
 import java.util.Iterator
 
 final class IteratorExtensions {
 
 	private new() {
+	}
+
+	/**
+	 * Creates a new iterator by applying a function to all values produced by this iterator
+	 * and concatenating the results.
+	 *
+	 * <p>The returned iterator supports {@code remove()} if this function-returned iterator does.
+	 */
+	def static <T, U> Iterator<U> flatMap(Iterator<T> iterator, (T) => Iterator<? extends U> function) {
+		Iterators::concat(Iterators::transform(iterator, function))
 	}
 
 	/**
