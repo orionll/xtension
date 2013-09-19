@@ -11,4 +11,9 @@ class TestStringExtensions {
 	def void map() {
 		assertThat("abcd".map[Character::toUpperCase(it)]).isEqualTo("ABCD")
 	}
+
+	@Test
+	def void flatMap() {
+		assertThat("abcd".flatMap["x" + it]).isEqualTo("xaxbxcxd")
+	}
 }

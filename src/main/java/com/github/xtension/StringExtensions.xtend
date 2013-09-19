@@ -28,4 +28,19 @@ final class StringExtensions {
 
 		new String(result)
 	}
+
+	/**
+	 * Builds a new string by applying a function to all elements of this string.
+	 */
+	def static String flatMap(String str, (char) => String function) {
+		val result = new StringBuilder
+
+		var i = 0
+		for (c : str.toCharArray) {
+			result.append(function.apply(c))
+			i = i + 1
+		}
+
+		result.toString
+	}
 }
