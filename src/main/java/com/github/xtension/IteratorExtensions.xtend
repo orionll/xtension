@@ -2,13 +2,17 @@ package com.github.xtension
 
 import com.google.common.annotations.Beta
 import com.google.common.collect.Iterators
+import com.google.common.collect.Maps
 import com.google.common.collect.Ordering
 import com.google.common.math.IntMath
 import com.google.common.math.LongMath
 import java.util.Comparator
 import java.util.Iterator
 import java.util.List
+import java.util.Map
 import java.util.RandomAccess
+
+import static extension com.github.xtension.MapExtensions.*
 
 final class IteratorExtensions {
 
@@ -78,6 +82,28 @@ final class IteratorExtensions {
 	 */
 	def static <T> Iterator<List<T>> grouped(Iterator<T> iterator, int size) {
 		Iterators::partition(iterator, size)
+	}
+
+	/**
+	 * Partitions this iterator into a map of lists according to some discriminator function.
+	 *
+	 * <p>The resulting map and lists are unmodifiable.
+	 */
+	def static <T, K> Map<K, List<T>> groupBy(Iterator<T> iterator, (T) => K function) {
+		val map = Maps::<K, List<T>>newHashMap
+		val newArrayList = [| newArrayList]
+
+		while (iterator.hasNext) {
+			val elem = iterator.next
+			val key = function.apply(elem)
+			map.getOrElseUpdate(key, newArrayList).add(elem)
+		}
+
+		for (key : map.keySet) {
+			map.put(key, map.get(key).unmodifiableView)
+		}
+
+		map.unmodifiableView
 	}
 
 	/**

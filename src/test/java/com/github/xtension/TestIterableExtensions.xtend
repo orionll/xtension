@@ -95,6 +95,14 @@ class TestIterableExtensions {
 	}
 
 	@Test
+	def void groupBy() {
+		val map = #[1, 2, 3].groupBy[it % 2 == 0]
+		assertThat(map).hasSize(2)
+		assertThat(map.get(true)).containsExactly(2)
+		assertThat(map.get(false)).containsExactly(1, 3)
+	}
+
+	@Test
 	def void min() {
 		assertThat(#[1, 2, 0].min).isEqualTo(0)
 	}

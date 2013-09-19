@@ -11,12 +11,10 @@ import com.google.common.collect.FluentIterable
 import com.google.common.collect.Iterables
 import com.google.common.collect.Iterators
 import com.google.common.collect.Lists
-import com.google.common.collect.Maps
 import com.google.common.collect.Ordering
 
 import static com.google.common.base.Preconditions.*
 
-import static extension com.github.xtension.MapExtensions.*
 import static extension com.github.xtension.IteratorExtensions.*
 
 final class IterableExtensions {
@@ -263,19 +261,7 @@ final class IterableExtensions {
 	 * <p>The resulting map and lists are unmodifiable.
 	 */
 	def static <T, K> Map<K, List<T>> groupBy(Iterable<T> iterable, (T) => K function) {
-		val map = Maps::<K, List<T>>newHashMap
-		val newArrayList = [| newArrayList]
-
-		for (elem : iterable) {
-			val key = function.apply(elem)
-			map.getOrElseUpdate(key, newArrayList).add(elem)
-		}
-
-		for (key : map.keySet) {
-			map.put(key, map.get(key).unmodifiableView)
-		}
-
-		map.unmodifiableView
+		iterable.iterator.groupBy(function)
 	}
 
 	/**
