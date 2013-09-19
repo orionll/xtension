@@ -5,6 +5,8 @@ import com.google.common.collect.Iterators
 import com.google.common.math.IntMath
 import com.google.common.math.LongMath
 import java.util.Iterator
+import java.util.List
+import java.util.RandomAccess
 
 final class IteratorExtensions {
 
@@ -57,6 +59,23 @@ final class IteratorExtensions {
 	 */
 	def static <T, U> Iterator<U> scan(Iterator<T> iterator, U seed, (U, T) => U function) {
 		new ScanItr(iterator, seed, function)
+	}
+
+	/**
+	 * Divides this iterator into unmodifiable sublists of the given size (the final list may be
+	 * smaller). For example, grouping an iterator containing {@code [a, b, c, d, e]} with a group
+	 * size of 3 yields {@code [[a, b, c], [d, e]]} -- an outer iterator containing two inner lists
+	 * of three and two elements, all in the original order.
+	 *
+	 * <p>The returned iterator does not support the {@link Iterator#remove()} method.
+	 * The returned lists implement {@link RandomAccess}.
+	 *
+	 * @return an iterable of unmodifiable lists containing the elements of {@code iterator} divided
+	 *	into groups
+	 * @throws IllegalArgumentException if {@code size} is nonpositive
+	 */
+	def static <T> Iterator<List<T>> grouped(Iterator<T> iterator, int size) {
+		Iterators::partition(iterator, size)
 	}
 
 	/**

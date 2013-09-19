@@ -90,6 +90,11 @@ class TestIterableExtensions {
 	}
 
 	@Test
+	def void grouped() {
+		assertThat(#[1, 2, 3].grouped(2)).containsExactly(#[1, 2], #[3])
+	}
+
+	@Test
 	def void sumInt() {
 		assertThat(#[1,2,3].sumInt).isEqualTo(6)
 	}
