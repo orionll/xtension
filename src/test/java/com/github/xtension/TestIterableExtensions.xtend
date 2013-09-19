@@ -95,6 +95,26 @@ class TestIterableExtensions {
 	}
 
 	@Test
+	def void min() {
+		assertThat(#[1, 2, 0].min).isEqualTo(0)
+	}
+
+	@Test
+	def void minBy() {
+		assertThat(#[1, 2, 0].minBy[-it]).isEqualTo(2)
+	}
+
+	@Test
+	def void max() {
+		assertThat(#[1, 2, 0].max).isEqualTo(2)
+	}
+
+	@Test
+	def void maxBy() {
+		assertThat(#[1, 2, 3].maxBy[-it]).isEqualTo(1)
+	}
+
+	@Test
 	def void sumInt() {
 		assertThat(#[1,2,3].sumInt).isEqualTo(6)
 	}

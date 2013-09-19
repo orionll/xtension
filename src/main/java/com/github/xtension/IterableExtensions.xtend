@@ -179,7 +179,7 @@ final class IterableExtensions {
 	 * Returns the minimum element of this iterable, according to the <i>natural ordering</i>
 	 * of its elements. All elements in the iterable must implement the <tt>Comparable</tt>
 	 * interface.
-	 * 
+	 *
 	 * @throws NoSuchElementException if the iterable is empty.
 	 */
 	def static <T extends Object & Comparable<? super T>> T min(Iterable<T> iterable) {
@@ -189,27 +189,17 @@ final class IterableExtensions {
 	/**
 	 * Returns the minimum element of the given iterable, according to the order induced by
 	 * the specified comparator.
-	 * 
+	 *
 	 * @throws NoSuchElementException if the iterable is empty.
 	 */
 	def static <T> T min(Iterable<T> iterable, Comparator<? super T> comp) {
-		val i = iterable.iterator
-		var min = i.next
-
-		while (i.hasNext) {
-			val next = i.next
-			if (comp.compare(next, min) < 0) {
-				min = next
-			}
-		}
-
-		min
+		iterable.iterator.min(comp)
 	}
 
 	/**
 	 * Returns the minimum element of the given iterable based on the given {@code transformation},
 	 * according to the <i>natural ordering</i> of the values.
-	 * 
+	 *
 	 * @throws NoSuchElementException if the iterable is empty.
 	 */
 	def static <T, U extends Object & Comparable<? super U>> T minBy(Iterable<T> iterable, (T) => U function) {
@@ -219,28 +209,18 @@ final class IterableExtensions {
 	/**
 	 * Returns the minimum element of the given iterable based on the given {@code transformation},
 	 * according to the order induced by the specified comparator.
-	 * 
+	 *
 	 * @throws NoSuchElementException if the iterable is empty.
 	 */
 	def static <T, U> T minBy(Iterable<T> iterable, Comparator<? super U> comp, (T) => U function) {
-		val i = iterable.iterator
-		var min = i.next
-
-		while (i.hasNext) {
-			val next = i.next
-			if (comp.compare(function.apply(next), function.apply(min)) < 0) {
-				min = next
-			}
-		}
-
-		min
+		iterable.iterator.minBy(comp, function)
 	}
 
 	/**
 	 * Returns the maximum element of this iterable, according to the <i>natural ordering</i>
 	 * of its elements. All elements in the iterable must implement the <tt>Comparable</tt>
 	 * interface.
-	 * 
+	 *
 	 * @throws NoSuchElementException if the iterable is empty.
 	 */
 	def static <T extends Object & Comparable<? super T>> T max(Iterable<T> iterable) {
@@ -250,27 +230,17 @@ final class IterableExtensions {
 	/**
 	 * Returns the maximum element of the given iterable, according to the order induced by
 	 * the specified comparator.
-	 * 
+	 *
 	 * @throws NoSuchElementException if the iterable is empty.
 	 */
 	def static <T> T max(Iterable<T> iterable, Comparator<? super T> comp) {
-		val i = iterable.iterator
-		var max = i.next
-
-		while (i.hasNext) {
-			val next = i.next
-			if (comp.compare(next, max) > 0) {
-				max = next
-			}
-		}
-
-		max
+		iterable.iterator.max(comp)
 	}
 
 	/**
 	 * Returns the maximum element of the given iterable based on the given {@code transformation},
 	 * according to the <i>natural ordering</i> of the values.
-	 * 
+	 *
 	 * @throws NoSuchElementException if the iterable is empty.
 	 */
 	def static <T, U extends Object & Comparable<? super U>> T maxBy(Iterable<T> iterable, (T) => U function) {
@@ -280,21 +250,11 @@ final class IterableExtensions {
 	/**
 	 * Returns the maximum element of the given iterable based on the given {@code transformation},
 	 * according to the order induced by the specified comparator.
-	 * 
+	 *
 	 * @throws NoSuchElementException if the iterable is empty.
 	 */
 	def static <T, U> T maxBy(Iterable<T> iterable, Comparator<? super U> comp, (T) => U function) {
-		val i = iterable.iterator
-		var max = i.next
-
-		while (i.hasNext) {
-			val next = i.next
-			if (comp.compare(function.apply(next), function.apply(max)) > 0) {
-				max = next
-			}
-		}
-
-		max
+		iterable.iterator.maxBy(comp, function)
 	}
 
 	/**

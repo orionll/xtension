@@ -2,8 +2,10 @@ package com.github.xtension
 
 import com.google.common.annotations.Beta
 import com.google.common.collect.Iterators
+import com.google.common.collect.Ordering
 import com.google.common.math.IntMath
 import com.google.common.math.LongMath
+import java.util.Comparator
 import java.util.Iterator
 import java.util.List
 import java.util.RandomAccess
@@ -76,6 +78,124 @@ final class IteratorExtensions {
 	 */
 	def static <T> Iterator<List<T>> grouped(Iterator<T> iterator, int size) {
 		Iterators::partition(iterator, size)
+	}
+
+	/**
+	 * Returns the minimum element of this iterator, according to the <i>natural ordering</i>
+	 * of its elements. All elements in the iterator must implement the <tt>Comparable</tt>
+	 * interface.
+	 *
+	 * @throws NoSuchElementException if the iterator is empty.
+	 */
+	def static <T extends Object & Comparable<? super T>> T min(Iterator<T> iterator) {
+		iterator.min(Ordering::natural)
+	}
+
+	/**
+	 * Returns the minimum element of the given iterator, according to the order induced by
+	 * the specified comparator.
+	 *
+	 * @throws NoSuchElementException if the iterator is empty.
+	 */
+	def static <T> T min(Iterator<T> iterator, Comparator<? super T> comp) {
+		var min = iterator.next
+
+		while (iterator.hasNext) {
+			val next = iterator.next
+			if (comp.compare(next, min) < 0) {
+				min = next
+			}
+		}
+
+		min
+	}
+
+	/**
+	 * Returns the minimum element of the given iterator based on the given {@code transformation},
+	 * according to the <i>natural ordering</i> of the values.
+	 *
+	 * @throws NoSuchElementException if the iterator is empty.
+	 */
+	def static <T, U extends Object & Comparable<? super U>> T minBy(Iterator<T> iterator, (T) => U function) {
+		iterator.minBy(Ordering::natural, function)
+	}
+
+	/**
+	 * Returns the minimum element of the given iterator based on the given {@code transformation},
+	 * according to the order induced by the specified comparator.
+	 *
+	 * @throws NoSuchElementException if the iterator is empty.
+	 */
+	def static <T, U> T minBy(Iterator<T> iterator, Comparator<? super U> comp, (T) => U function) {
+		var min = iterator.next
+
+		while (iterator.hasNext) {
+			val next = iterator.next
+			if (comp.compare(function.apply(next), function.apply(min)) < 0) {
+				min = next
+			}
+		}
+
+		min
+	}
+
+	/**
+	 * Returns the maximum element of this iterator, according to the <i>natural ordering</i>
+	 * of its elements. All elements in the iterator must implement the <tt>Comparable</tt>
+	 * interface.
+	 *
+	 * @throws NoSuchElementException if the iterator is empty.
+	 */
+	def static <T extends Object & Comparable<? super T>> T max(Iterator<T> iterator) {
+		iterator.max(Ordering::natural)
+	}
+
+	/**
+	 * Returns the maximum element of the given iterator, according to the order induced by
+	 * the specified comparator.
+	 *
+	 * @throws NoSuchElementException if the iterator is empty.
+	 */
+	def static <T> T max(Iterator<T> iterator, Comparator<? super T> comp) {
+		var max = iterator.next
+
+		while (iterator.hasNext) {
+			val next = iterator.next
+			if (comp.compare(next, max) > 0) {
+				max = next
+			}
+		}
+
+		max
+	}
+
+	/**
+	 * Returns the maximum element of the given iterator based on the given {@code transformation},
+	 * according to the <i>natural ordering</i> of the values.
+	 *
+	 * @throws NoSuchElementException if the iterator is empty.
+	 */
+	def static <T, U extends Object & Comparable<? super U>> T maxBy(Iterator<T> iterator, (T) => U function) {
+		iterator.maxBy(Ordering::natural, function)
+	}
+
+	/**
+	 * Returns the maximum element of the given iterator based on the given {@code transformation},
+	 * according to the order induced by the specified comparator.
+	 *
+	 * @throws NoSuchElementException if the iterator is empty.
+	 */
+	def static <T, U> T maxBy(Iterator<T> iterator, Comparator<? super U> comp, (T) => U function) {
+		var max = iterator.next
+
+		while (iterator.hasNext) {
+			val next = iterator.next
+			if (comp.compare(function.apply(next), function.apply(max)) > 0) {
+				max = next
+			}
+		}
+
+		max
 	}
 
 	/**
