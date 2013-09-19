@@ -1,6 +1,9 @@
 package com.github.xtension
 
+import com.google.common.annotations.Beta
 import com.google.common.collect.Iterators
+import com.google.common.math.IntMath
+import com.google.common.math.LongMath
 import java.util.Iterator
 
 final class IteratorExtensions {
@@ -54,5 +57,44 @@ final class IteratorExtensions {
 	 */
 	def static <T, U> Iterator<U> scan(Iterator<T> iterator, U seed, (U, T) => U function) {
 		new ScanItr(iterator, seed, function)
+	}
+
+	/**
+	 * Sums up the elements of this iterator.
+	 */
+	@Beta
+	def static<T> int sumInt(Iterator<Integer> iterator) {
+		var sum = 0
+		while (iterator.hasNext) {
+			sum = IntMath::checkedAdd(sum, iterator.next)
+		}
+
+		sum
+	}
+
+	/**
+	 * Sums up the elements of this iterator.
+	 */
+	@Beta
+	def static<T> long sumLong(Iterator<Long> iterator) {
+		var sum = 0L
+		while (iterator.hasNext) {
+			sum = LongMath::checkedAdd(sum, iterator.next)
+		}
+
+		sum
+	}
+
+	/**
+	 * Sums up the elements of this iterator.
+	 */
+	@Beta
+	def static<T> double sumDouble(Iterator<Double> iterator) {
+		var sum = 0.0
+		while (iterator.hasNext) {
+			sum = sum + iterator.next
+		}
+
+		sum
 	}
 }

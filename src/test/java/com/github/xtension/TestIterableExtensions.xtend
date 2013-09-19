@@ -88,4 +88,19 @@ class TestIterableExtensions {
 	def void zip() {
 		assertThat(#[1,2,3].zip(#['a','b','c'])[ a, b | a + b ]).containsExactly('1a', '2b', '3c')
 	}
+
+	@Test
+	def void sumInt() {
+		assertThat(#[1,2,3].sumInt).isEqualTo(6)
+	}
+
+	@Test
+	def void sumLong() {
+		assertThat(#[1L,2L,3L].sumLong).isEqualTo(6L)
+	}
+
+	@Test
+	def void sumDouble() {
+		assertThat(#[1.0,2.0,3.0].sumDouble).isEqualTo(6.0, offset(1e-10))
+	}
 }

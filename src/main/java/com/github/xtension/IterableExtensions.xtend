@@ -13,12 +13,11 @@ import com.google.common.collect.Iterators
 import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import com.google.common.collect.Ordering
-import com.google.common.math.IntMath
-import com.google.common.math.LongMath
 
 import static com.google.common.base.Preconditions.*
 
 import static extension com.github.xtension.MapExtensions.*
+import static extension com.github.xtension.IteratorExtensions.*
 
 final class IterableExtensions {
 
@@ -573,12 +572,7 @@ final class IterableExtensions {
 	 */
 	@Beta
 	def static<T> int sumInt(Iterable<Integer> iterable) {
-		var sum = 0
-		for (i : iterable) {
-			sum = IntMath::checkedAdd(sum, i)
-		}
-
-		sum
+		iterable.iterator.sumInt
 	}
 
 	/**
@@ -586,12 +580,7 @@ final class IterableExtensions {
 	 */
 	@Beta
 	def static<T> long sumLong(Iterable<Long> iterable) {
-		var sum = 0L
-		for (i : iterable) {
-			sum = LongMath::checkedAdd(sum, i)
-		}
-
-		sum
+		iterable.iterator.sumLong
 	}
 
 	/**
@@ -599,11 +588,6 @@ final class IterableExtensions {
 	 */
 	@Beta
 	def static<T> double sumDouble(Iterable<Double> iterable) {
-		var sum = 0.0
-		for (i : iterable) {
-			sum = sum + i
-		}
-
-		sum
+		iterable.iterator.sumDouble
 	}
 }
