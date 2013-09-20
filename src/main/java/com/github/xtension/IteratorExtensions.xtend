@@ -1,6 +1,7 @@
 package com.github.xtension
 
 import com.google.common.annotations.Beta
+import com.google.common.base.Optional
 import com.google.common.collect.Iterators
 import com.google.common.collect.Maps
 import com.google.common.collect.Ordering
@@ -17,6 +18,21 @@ import static extension com.github.xtension.MapExtensions.*
 final class IteratorExtensions {
 
 	private new() {
+	}
+	
+	/**
+	 * Returns an {@link Optional} containing the first element in this iterator.
+	 * If the iterator is empty, {@code Optional.absent()} is returned.
+	 *
+	 * @throws NullPointerException if the first element is null; if this is a possibility, use
+	 *	{@link org.eclipse.xtext.xbase.lib.IteratorExtensions#head} instead.
+	 */
+	def static <T> Optional<T> headOptional(Iterator<T> iterator) {
+		if (iterator.hasNext) {
+			Optional::of(iterator.next)
+		} else {
+			Optional::absent
+		}
 	}
 
 	/**
