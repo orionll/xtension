@@ -49,7 +49,7 @@ final class IterableExtensions {
 	 * satisfies the given predicate, if such an element exists.
 	 *
 	 * <p><b>Warning:</b> avoid using a {@code predicate} that matches {@code null}. If {@code null}
-	 * is matched in this fluent iterable, a {@link NullPointerException} will be thrown.
+	 * is matched in this iterable, a {@link NullPointerException} will be thrown.
 	 */
 	def static <T> Optional<T> findFirstOptional(Iterable<T> iterable, (T) => boolean predicate) {
 		Iterables::tryFind(iterable, predicate)

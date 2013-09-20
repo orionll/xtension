@@ -19,7 +19,7 @@ final class IteratorExtensions {
 
 	private new() {
 	}
-	
+
 	/**
 	 * Returns an {@link Optional} containing the first element in this iterator.
 	 * If the iterator is empty, {@code Optional.absent()} is returned.
@@ -33,6 +33,19 @@ final class IteratorExtensions {
 		} else {
 			Optional::absent
 		}
+	}
+
+	/**
+	 * Returns an {@link Optional} containing the first element in this iterator that
+	 * satisfies the given predicate, if such an element exists. If no such element is found,
+	 * {@code Optional.absent()} will be returned from this method and the the iterator will
+	 * be left exhausted: its hasNext() method will return false.
+	 *
+	 * <p><b>Warning:</b> avoid using a {@code predicate} that matches {@code null}. If {@code null}
+	 * is matched in this iterator, a {@link NullPointerException} will be thrown.
+	 */
+	def static <T> Optional<T> findFirstOptional(Iterator<T> iterator, (T) => boolean predicate) {
+		Iterators::tryFind(iterator, predicate)
 	}
 
 	/**
