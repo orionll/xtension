@@ -1,10 +1,5 @@
 package com.github.xtension
 
-import java.util.Collections
-import java.util.Comparator
-import java.util.Iterator
-import java.util.List
-import java.util.Map
 import com.google.common.annotations.Beta
 import com.google.common.base.Optional
 import com.google.common.collect.FluentIterable
@@ -12,6 +7,14 @@ import com.google.common.collect.Iterables
 import com.google.common.collect.Iterators
 import com.google.common.collect.Lists
 import com.google.common.collect.Ordering
+import java.util.Collection
+import java.util.Collections
+import java.util.Comparator
+import java.util.Iterator
+import java.util.List
+import java.util.Map
+import java.util.RandomAccess
+import org.eclipse.xtext.xbase.lib.Pair
 
 import static com.google.common.base.Preconditions.*
 
@@ -81,11 +84,16 @@ final class IterableExtensions {
 	/**
 	 * Produces the iterable of all indices of this iterable.
 	 *
-	 *  @return	an iterable from 0 to one less than the size of this iterable.
+	 * @return	an iterable from 0 to one less than the size of this iterable.
 	 */
 	def static Iterable<Integer> indices(Iterable<?> iterable) {
-		val FluentIterable<Integer> result = [| new IndicesItr(iterable.iterator)]
-		result
+		switch (iterable) {
+			Collection<?> : 0 ..< iterable.size
+			default : {
+				val FluentIterable<Integer> result = [| new IndicesItr(iterable.iterator)]
+				result
+			}
+		}
 	} 
 
 	/**
