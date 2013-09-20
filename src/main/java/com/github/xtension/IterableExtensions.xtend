@@ -79,12 +79,13 @@ final class IterableExtensions {
 	}
 
 	/**
-	 * Produces the range of all indices of this iterable.
+	 * Produces the iterable of all indices of this iterable.
 	 *
-	 *  @return	a range from 0 to one less than the size of this iterable.
+	 *  @return	an iterable from 0 to one less than the size of this iterable.
 	 */
-	def static ExclusiveRange indices(Iterable<?> iterable) {
-		0 ..< iterable.size
+	def static Iterable<Integer> indices(Iterable<?> iterable) {
+		val FluentIterable<Integer> result = [| new IndicesItr(iterable.iterator)]
+		result
 	} 
 
 	/**
@@ -152,7 +153,8 @@ final class IterableExtensions {
 	 * <p>The resulting iterable's iterator does not support {@code remove()}.
 	 */
 	def static <T> Iterable<Pair<T, Integer>> zipWithIndex(Iterable<T> iterable) {
-		iterable.zip(iterable.indices)
+		val FluentIterable<Pair<T, Integer>> result = [| iterable.iterator.zipWithIndex]
+		result
 	}
 
 	/**

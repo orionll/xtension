@@ -12,6 +12,7 @@ import java.util.Iterator
 import java.util.List
 import java.util.Map
 import java.util.RandomAccess
+import org.eclipse.xtext.xbase.lib.Pair
 
 import static extension com.github.xtension.MapExtensions.*
 
@@ -81,6 +82,15 @@ final class IteratorExtensions {
 	 */
 	def static <T, U, R> Iterator<R> zip(Iterator<T> a, Iterator<U> b, (T, U) => R operator) {
 		new ZipItr(a, b, operator)
+	}
+
+	/**
+	 * Zips this iterator with its indices.
+	 *
+	 * <p>The resulting iterator's iterator does not support {@code remove()}.
+	 */
+	def static <T> Iterator<Pair<T, Integer>> zipWithIndex(Iterator<T> iterator) {
+		iterator.zip((0 .. Integer::MAX_VALUE).iterator)
 	}
 
 	/**

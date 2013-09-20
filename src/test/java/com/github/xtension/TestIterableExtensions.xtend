@@ -114,6 +114,11 @@ class TestIterableExtensions {
 	}
 
 	@Test
+	def void zipWithIndex() {
+		assertThat(#[1,2,3].zipWithIndex).containsExactly(1 -> 0, 2 -> 1, 3 -> 2)
+	}
+
+	@Test
 	def void grouped() {
 		assertThat(#[1, 2, 3].grouped(2)).containsExactly(#[1, 2], #[3])
 	}
