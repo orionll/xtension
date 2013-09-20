@@ -8,7 +8,7 @@ final class StringExtensions {
 	}
 
 	/**
-	 * Applies {@code procedure} for each element of this string.
+	 * Applies {@code procedure} for each character of this string.
 	 */
 	def static <T> forEach(String str, (char) => void procedure) {
 		for (c : str.toCharArray) {
@@ -17,7 +17,7 @@ final class StringExtensions {
 	}
 
 	/**
-	 * Builds a new string by applying a function to all elements of this string.
+	 * Builds a new string by applying a function to all characters of this string.
 	 */
 	def static String map(String str, (char) => char function) {
 		val result = newCharArrayOfSize(str.length)
@@ -32,7 +32,7 @@ final class StringExtensions {
 	}
 
 	/**
-	 * Builds a new string by applying a function to all elements of this string.
+	 * Builds a new string by applying a function to all characters of this string.
 	 */
 	def static String flatMap(String str, (char) => String function) {
 		val result = new StringBuilder
