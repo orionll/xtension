@@ -16,4 +16,9 @@ class TestStringExtensions {
 	def void flatMap() {
 		assertThat("abcd".flatMap["x" + it]).isEqualTo("xaxbxcxd")
 	}
+
+	@Test
+	def void repeat() {
+		assertThat("abc" * 3).isEqualTo("abcabcabc")
+	}
 }

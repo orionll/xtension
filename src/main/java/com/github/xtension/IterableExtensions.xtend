@@ -105,17 +105,6 @@ final class IterableExtensions {
 	}
 
 	/**
-	 * Produces a new iterable which contains all elements of this iterable and also all elements of
-	 * a given iterable. The source iterators are not polled until necessary.
-	 *
-	 * <p>The returned iterable's iterator supports {@code remove()} when the
-	 * corresponding input iterator supports it.
-	 */
-	def static <T> Iterable<T> union(Iterable<? extends T> a, Iterable<? extends T> b) {
-		Iterables::concat(a, b)
-	}
-
-	/**
 	 * Returns an iterable formed from this iterable and another iterable by combining
 	 * corresponding elements in pairs. If one of the two collections is longer than the other,
 	 * its remaining elements are ignored. The source iterators are not polled until necessary.

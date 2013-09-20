@@ -1,5 +1,7 @@
 package com.github.xtension
 
+import com.google.common.base.Strings
+
 final class StringExtensions {
 
 	private new() {
@@ -42,5 +44,12 @@ final class StringExtensions {
 		}
 
 		result.toString
+	}
+
+	/**
+	 * Return this string concatenated n times.
+	 */
+	def static String operator_multiply(String str, int n) {
+		Strings::repeat(str, n)
 	}
 }
