@@ -8,6 +8,30 @@ import static org.assertj.core.api.Assertions.*
 import static extension com.github.xtension.IterableExtensions.*
 
 class TestIterableExtensions {
+
+	@Test
+	def void headOptional() {
+		org.assertj.guava.api.Assertions::assertThat(#[1, 2, 3].headOptional).contains(1)
+		org.assertj.guava.api.Assertions::assertThat(#[].headOptional).isAbsent
+	}
+
+	@Test
+	def void lastOptional() {
+		org.assertj.guava.api.Assertions::assertThat(#[1, 2, 3].lastOptional).contains(3)
+		org.assertj.guava.api.Assertions::assertThat(#[].lastOptional).isAbsent
+	}
+
+	@Test
+	def void findFirstOptional() {
+		org.assertj.guava.api.Assertions::assertThat(#[1, 2, 3].findFirstOptional[it > 1]).contains(2)
+		org.assertj.guava.api.Assertions::assertThat(#[1, 2, 3].findFirstOptional[it > 3]).isAbsent
+	}
+
+	@Test
+	def void count() {
+		assertThat(#[1, 2, 3].count[it % 2 == 0]).isEqualTo(1)
+	}
+
 	@Test
 	def void takeRight() {
 		val list = #[1, 2, 3]
