@@ -84,6 +84,17 @@ final class IteratorExtensions {
 	}
 
 	/**
+	 * Returns an iterator formed from this iterator and another iterator by combining
+	 * corresponding elements in pairs. If one of the two iterators is longer than the other,
+	 * its remaining elements are ignored.
+	 *
+	 * <p>The resulting iterator does not support {@code remove()}.
+	 */
+	def static <T, U> Iterator<Pair<T, U>> zip(Iterator<T> a, Iterator<U> b) {
+		zip(a, b, [x, y | x -> y])
+	}
+
+	/**
 	 * Takes longest prefix of elements that satisfy a predicate.
 	 *
 	 * <p>The resulting iterator does not support {@code remove()}.
