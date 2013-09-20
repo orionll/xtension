@@ -75,14 +75,7 @@ final class IterableExtensions {
 	 * Counts the number of elements in this iterable which satisfy a predicate.
 	 */
 	def static <T> int count(Iterable<T> iterable, (T) => boolean predicate) {
-		var count = 0
-		for (element : iterable) {
-			if (predicate.apply(element)) {
-				count = count + 1
-			}
-		}
-
-		count
+		iterable.iterator.count(predicate)
 	}
 
 	/**

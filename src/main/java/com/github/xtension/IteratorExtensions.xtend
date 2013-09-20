@@ -49,6 +49,20 @@ final class IteratorExtensions {
 	}
 
 	/**
+	 * Counts the number of elements in this iterator which satisfy a predicate.
+	 */
+	def static <T> int count(Iterator<T> iterator, (T) => boolean predicate) {
+		var count = 0
+		while (iterator.hasNext) {
+			if (predicate.apply(iterator.next)) {
+				count = count + 1
+			}
+		}
+
+		count
+	}
+
+	/**
 	 * Creates a new iterator by applying a function to all values produced by this iterator
 	 * and concatenating the results.
 	 *
