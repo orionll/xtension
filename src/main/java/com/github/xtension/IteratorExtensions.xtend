@@ -14,6 +14,8 @@ import java.util.Map
 import java.util.RandomAccess
 import org.eclipse.xtext.xbase.lib.Pair
 
+import static com.google.common.base.Preconditions.*
+
 import static extension com.github.xtension.MapExtensions.*
 
 final class IteratorExtensions {
@@ -120,6 +122,24 @@ final class IteratorExtensions {
 	 */
 	def static <T> Iterator<T> dropWhile(Iterator<T> iterator, (T) => boolean predicate) {
 		new DropWhileItr(iterator, predicate)
+	}
+
+	/**
+	 * Returns an iterator containing the elements greater than or equal to index {@code from} extending
+	 * up to (but not including) index {@code until} of this iterator.
+	 *
+	 * <p>The source iterator is not polled until necessary. The resulting iterator's iterator does
+	 * not support {@code remove()}.
+	 */
+	def static <T> Iterator<T> slice(Iterator<T> iterator, int from, int until) {
+		checkArgument(from >= 0, "Argument 'from' was negative: %s", from)
+		checkArgument(until >= 0, "Argument 'until' was negative: %s", until)
+
+		if (until <= from) {
+			Iterators::emptyIterator
+		} else {
+			iterator.drop(from).take(until - from)
+		}
 	}
 
 	/**

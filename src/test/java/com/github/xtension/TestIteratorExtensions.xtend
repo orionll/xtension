@@ -12,4 +12,12 @@ class TestIteratorExtensions {
 	def void flatMap() {
 		assertThat(#[1,2,3].iterator.flatMap[#[it, it + 1].iterator]).containsExactly(1, 2, 2, 3, 3, 4)
 	}
+
+	@Test
+	def void slice() {
+		assertThat(#[1,2,3].iterator.slice(1, 2)).containsExactly(2)
+		assertThat(#[1,2,3].iterator.slice(1, 3)).containsExactly(2, 3)
+		assertThat(#[1,2,3].iterator.slice(1, 4)).containsExactly(2, 3)
+		assertThat(#[1,2,3].iterator.slice(4, 5)).isEmpty
+	}
 }
