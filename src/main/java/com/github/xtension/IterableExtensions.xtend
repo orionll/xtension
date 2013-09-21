@@ -177,7 +177,7 @@ final class IterableExtensions {
 	}
 
 	/**
-	 * Returns the minimum element of the given iterable, according to the order induced by
+	 * Returns the minimum element of this iterable, according to the order induced by
 	 * the specified comparator.
 	 *
 	 * @throws NoSuchElementException if the iterable is empty.
@@ -210,7 +210,7 @@ final class IterableExtensions {
 	}
 
 	/**
-	 * Returns the minimum element of the given iterable based on the given {@code transformation},
+	 * Returns the minimum element of this iterable based on the given transformation,
 	 * according to the <i>natural ordering</i> of the values.
 	 *
 	 * @throws NoSuchElementException if the iterable is empty.
@@ -220,7 +220,7 @@ final class IterableExtensions {
 	}
 
 	/**
-	 * Returns the minimum element of the given iterable based on the given {@code transformation},
+	 * Returns the minimum element of the this iterable based on the given transformation,
 	 * according to the order induced by the specified comparator.
 	 *
 	 * @throws NoSuchElementException if the iterable is empty.
@@ -263,7 +263,7 @@ final class IterableExtensions {
 	}
 
 	/**
-	 * Returns the maximum element of the given iterable, according to the order induced by
+	 * Returns the maximum element of the this iterable, according to the order induced by
 	 * the specified comparator.
 	 *
 	 * @throws NoSuchElementException if the iterable is empty.
@@ -296,7 +296,7 @@ final class IterableExtensions {
 	}
 
 	/**
-	 * Returns the maximum element of the given iterable based on the given {@code transformation},
+	 * Returns the maximum element of the this iterable based on the given transformation,
 	 * according to the <i>natural ordering</i> of the values.
 	 *
 	 * @throws NoSuchElementException if the iterable is empty.
@@ -306,7 +306,7 @@ final class IterableExtensions {
 	}
 
 	/**
-	 * Returns the maximum element of the given iterable based on the given {@code transformation},
+	 * Returns the maximum element of the this iterable based on the given transformation,
 	 * according to the order induced by the specified comparator.
 	 *
 	 * @throws NoSuchElementException if the iterable is empty.

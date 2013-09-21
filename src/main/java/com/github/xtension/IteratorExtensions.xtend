@@ -320,7 +320,7 @@ final class IteratorExtensions {
 	}
 
 	/**
-	 * Returns the minimum element of the given iterator, according to the order induced by
+	 * Returns the minimum element of this iterator, according to the order induced by
 	 * the specified comparator.
 	 *
 	 * @throws NoSuchElementException if the iterator is empty.
@@ -375,7 +375,7 @@ final class IteratorExtensions {
 	}
 
 	/**
-	 * Returns the minimum element of the given iterator based on the given {@code transformation},
+	 * Returns the minimum element of this iterator based on the given transformation,
 	 * according to the <i>natural ordering</i> of the values.
 	 *
 	 * @throws NoSuchElementException if the iterator is empty.
@@ -385,7 +385,7 @@ final class IteratorExtensions {
 	}
 
 	/**
-	 * Returns the minimum element of the given iterator based on the given {@code transformation},
+	 * Returns the minimum element of this iterator based on the given transformation,
 	 * according to the order induced by the specified comparator.
 	 *
 	 * @throws NoSuchElementException if the iterator is empty.
@@ -450,7 +450,7 @@ final class IteratorExtensions {
 	}
 
 	/**
-	 * Returns the maximum element of the given iterator, according to the order induced by
+	 * Returns the maximum element of this iterator, according to the order induced by
 	 * the specified comparator.
 	 *
 	 * @throws NoSuchElementException if the iterator is empty.
@@ -505,7 +505,7 @@ final class IteratorExtensions {
 	}
 
 	/**
-	 * Returns the maximum element of the given iterator based on the given {@code transformation},
+	 * Returns the maximum element of this iterator based on the given transformation,
 	 * according to the <i>natural ordering</i> of the values.
 	 *
 	 * @throws NoSuchElementException if the iterator is empty.
@@ -515,7 +515,7 @@ final class IteratorExtensions {
 	}
 
 	/**
-	 * Returns the maximum element of the given iterator based on the given {@code transformation},
+	 * Returns the maximum element of this iterator based on the given transformation,
 	 * according to the order induced by the specified comparator.
 	 *
 	 * @throws NoSuchElementException if the iterator is empty.
