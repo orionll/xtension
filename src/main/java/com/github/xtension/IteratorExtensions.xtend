@@ -39,6 +39,26 @@ final class IteratorExtensions {
 	}
 
 	/**
+	 * Returns an {@link Optional} containing the last element in this iterator.
+	 * If the iterator is empty, {@code Optional.absent()} is returned.
+	 *
+	 * @throws NullPointerException if the last element is null; if this is a possibility, use
+	 *	{@link org.eclipse.xtext.xbase.lib.IteratorExtensions#last} instead.
+	 */
+	def static <T> Optional<T> lastOptional(Iterator<T> iterator) {
+		if (iterator.hasNext) {
+			var T last = null
+			while (iterator.hasNext) {
+				last = iterator.next
+			}
+
+			Optional::of(last)
+		} else {
+			Optional::absent
+		}
+	}
+
+	/**
 	 * Returns an {@link Optional} containing the first element in this iterator that
 	 * satisfies the given predicate, if such an element exists. If no such element is found,
 	 * {@code Optional.absent()} will be returned from this method and the the iterator will

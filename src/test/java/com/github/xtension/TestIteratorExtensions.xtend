@@ -9,6 +9,12 @@ import static extension com.github.xtension.IteratorExtensions.*
 class TestIteratorExtensions {
 
 	@Test
+	def void lastOptional() {
+		org.assertj.guava.api.Assertions::assertThat(#[1,2,3].iterator.lastOptional).contains(3)
+		org.assertj.guava.api.Assertions::assertThat(#[].iterator.lastOptional).isAbsent
+	}
+
+	@Test
 	def void flatMap() {
 		assertThat(#[1,2,3].iterator.flatMap[#[it, it + 1].iterator]).containsExactly(1, 2, 2, 3, 3, 4)
 	}
