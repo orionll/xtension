@@ -132,6 +132,22 @@ class TestIterableExtensions {
 	}
 
 	@Test
+	def void indexWhere() {
+		assertThat(#[1, 3, 2].indexWhere[it > 1]).isEqualTo(1)
+		assertThat(#[1, 3, 2].indexWhere[it > 4]).isEqualTo(-1)
+		assertThat(#[1, 3, 2].indexWhere(2)[it > 1]).isEqualTo(2)
+		assertThat(#[1, 3, 2].indexWhere(2)[it > 4]).isEqualTo(-1)
+	}
+
+	@Test
+	def void lastIndexWhere() {
+		assertThat(#[1, 3, 2].lastIndexWhere[it > 1]).isEqualTo(2)
+		assertThat(#[1, 3, 2].lastIndexWhere[it > 4]).isEqualTo(-1)
+		assertThat(#[1, 3, 2].lastIndexWhere(1)[it > 1]).isEqualTo(1)
+		assertThat(#[1, 3, 2].lastIndexWhere(1)[it > 4]).isEqualTo(-1)
+	}
+
+	@Test
 	def void min() {
 		assertThat(#[1, 2, 0].min).isEqualTo(0)
 	}

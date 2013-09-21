@@ -225,6 +225,90 @@ final class IteratorExtensions {
 	}
 
 	/**
+	 * Finds the index of the first element that satisfies a predicate.
+	 *
+	 * @return the index of the first element of this iterator that satisfies the predicate,
+	 * or {@code -1}, if no elements satisfy the predicate.
+	 */
+	def static <T> int indexWhere(Iterator<T> iterator, (T) => boolean predicate) {
+		iterator.indexWhere(0, predicate)
+	}
+
+	/**
+	 * Finds the index of the first element that satisfies a predicate after or at some start index.
+	 *
+	 * @return the index {@code >= from} of the first element of this iterator that satisfies the predicate,
+	 * or {@code -1}, if no elements satisfy the predicate.
+	 */
+	def static <T> int indexWhere(Iterator<T> iterator, int from, (T) => boolean predicate) {
+		val drop = if (from == 0) iterator else iterator.drop(from)
+		var i = from
+
+		while (drop.hasNext) {
+			if (predicate.apply(drop.next)) {
+				return i
+			}
+
+			if (i == Integer::MAX_VALUE) {
+				throw new ArithmeticException('No element that satisfies the predicate found. Index reached maximum value of 32-bit integer.')
+			}
+			i = i + 1
+		}
+
+		return -1
+	}
+
+	/**
+	 * Finds the index of the last element that satisfies a predicate.
+	 *
+	 * @return the index of the last element of this iterator that satisfies the predicate,
+	 * or {@code -1}, if no elements satisfy the predicate.
+	 */
+	def static <T> int lastIndexWhere(Iterator<T> iterator, (T) => boolean predicate) {
+		var i = 0
+		var last = -1
+
+		while (iterator.hasNext) {
+			if (predicate.apply(iterator.next)) {
+				last = i
+			}
+
+			if (i == Integer::MAX_VALUE && iterator.hasNext) {
+				throw new ArithmeticException('Index reached maximum value of 32-bit integer but there are still more elements.')
+			}
+			i = i + 1
+		}
+
+		last
+	}
+
+	/**
+	 * Finds the index of the last element that satisfies a predicate before or at some end index.
+	 *
+	 * @return the index {@code <= end} of the last element of this iterator that satisfies the predicate,
+	 * or {@code -1}, if no elements satisfy the predicate.
+	 */
+	def static <T> int lastIndexWhere(Iterator<T> iterator, int end, (T) => boolean predicate) {
+		checkArgument(end >= 0, "Argument 'end' was negative: %s", end)
+
+		var i = 0
+		var last = -1
+
+		while (iterator.hasNext) {
+			if (i > end) {
+				return last
+			}
+			if (predicate.apply(iterator.next)) {
+				last = i
+			}
+
+			i = i + 1
+		}
+
+		last
+	}
+
+	/**
 	 * Returns the minimum element of this iterator, according to the <i>natural ordering</i>
 	 * of its elements. All elements in the iterator must implement the <tt>Comparable</tt>
 	 * interface.

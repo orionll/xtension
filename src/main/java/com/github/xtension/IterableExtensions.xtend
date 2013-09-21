@@ -434,7 +434,7 @@ final class IterableExtensions {
 	 * or {@code -1}, if no elements satisfy the predicate.
 	 */
 	def static <T> int indexWhere(Iterable<T> iterable, (T) => boolean predicate) {
-		iterable.indexWhere(0, predicate)
+		iterable.iterator.indexWhere(predicate)
 	}
 
 	/**
@@ -444,19 +444,7 @@ final class IterableExtensions {
 	 * or {@code -1}, if no elements satisfy the predicate.
 	 */
 	def static <T> int indexWhere(Iterable<T> iterable, int from, (T) => boolean predicate) {
-
-		val drop = if (from == 0) iterable else Iterables::skip(iterable, from)
-		var i = from
-
-		for (elem : drop) {
-			if (predicate.apply(elem)) {
-				return i
-			}
-
-			i = i + 1
-		}
-
-		return -1
+		iterable.iterator.indexWhere(from, predicate)
 	}
 
 	/**
@@ -466,7 +454,7 @@ final class IterableExtensions {
 	 * or {@code -1}, if no elements satisfy the predicate.
 	 */
 	def static <T> int lastIndexWhere(Iterable<T> iterable, (T) => boolean predicate) {
-		iterable.lastIndexWhere(iterable.size - 1, predicate)
+		iterable.iterator.lastIndexWhere(predicate)
 	}
 
 	/**
@@ -476,21 +464,7 @@ final class IterableExtensions {
 	 * or {@code -1}, if no elements satisfy the predicate.
 	 */
 	def static <T> int lastIndexWhere(Iterable<T> iterable, int end, (T) => boolean predicate) {
-		var i = 0
-		var last = -1
-
-		for (elem : iterable) {
-			if (i > end) {
-				return last
-			}
-			if (predicate.apply(elem)) {
-				last = i
-			}
-
-			i = i + 1
-		}
-
-		last
+		iterable.iterator.lastIndexWhere(end, predicate)
 	}
 
 	/**
