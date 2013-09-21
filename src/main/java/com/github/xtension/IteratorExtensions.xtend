@@ -189,6 +189,20 @@ final class IteratorExtensions {
 	}
 
 	/**
+	 * Groups elements of this iterator in fixed size blocks by passing a "sliding window" over them
+	 * (as opposed to partitioning them, as is done in {@link #grouped}.)
+	 *
+	 * <p>Iterators returned by the returned iterator do not support {@code remove()}.
+	 *
+	 * @return an iterator of unmodifiable lists of size {@code size}, except the last and the only element
+	 * will be truncated if there are fewer elements than {@code size}.
+	 */
+	def static <T> Iterator<List<T>> sliding(Iterator<T> iterator, int size) {
+		checkArgument(size >= 1, "Illegal sliding size: %s", size)
+		new SlidingItr(iterator, size)
+	}
+
+	/**
 	 * Partitions this iterator into a map of lists according to some discriminator function.
 	 *
 	 * <p>The resulting map and lists are unmodifiable.
