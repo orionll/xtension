@@ -1,5 +1,6 @@
 package com.github.xtension
 
+import java.util.ArrayList
 import java.util.Collections
 import org.junit.Test
 
@@ -165,6 +166,30 @@ class TestIterableExtensions {
 	@Test
 	def void maxBy() {
 		assertThat(#[1, 2, 3].maxBy[-it]).isEqualTo(1)
+	}
+
+	@Test
+	def void minOptional() {
+		org.assertj.guava.api.Assertions::assertThat(#[1, 2, 0].minOptional).contains(0)
+		org.assertj.guava.api.Assertions::assertThat(new ArrayList<Integer>().minOptional).isAbsent
+	}
+
+	@Test
+	def void minByOptional() {
+		org.assertj.guava.api.Assertions::assertThat(#[1, 2, 0].minByOptional[-it]).contains(2)
+		org.assertj.guava.api.Assertions::assertThat(new ArrayList<Integer>().minByOptional[-it]).isAbsent
+	}
+
+	@Test
+	def void maxOptional() {
+		org.assertj.guava.api.Assertions::assertThat(#[1, 2, 0].maxOptional).contains(2)
+		org.assertj.guava.api.Assertions::assertThat(new ArrayList<Integer>().maxOptional).isAbsent
+	}
+
+	@Test
+	def void maxByOptional() {
+		org.assertj.guava.api.Assertions::assertThat(#[1, 2, 3].maxByOptional[-it]).contains(1)
+		org.assertj.guava.api.Assertions::assertThat(new ArrayList<Integer>().maxByOptional[-it]).isAbsent
 	}
 
 	@Test

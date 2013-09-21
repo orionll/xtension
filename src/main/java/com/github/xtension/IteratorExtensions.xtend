@@ -339,6 +339,42 @@ final class IteratorExtensions {
 	}
 
 	/**
+	 * Returns an {@link Optional} containing the minimum element of this iterator,
+	 * according to the <i>natural ordering</i> of its elements. All elements in the
+	 * iterator must implement the <tt>Comparable</tt> interface.
+	 *
+	 * @throws NullPointerException if the min element is {@code null}; if this is
+	 * a possibility, use {@link #min} instead.
+	 */
+	def static <T extends Object & Comparable<? super T>> Optional<T> minOptional(Iterator<T> iterator) {
+		iterator.minOptional(Ordering::natural)
+	}
+
+	/**
+	 * Returns an {@link Optional} containing the minimum element of this iterator,
+	 * according to the order induced by the specified comparator.
+	 *
+	 * @throws NullPointerException if the min element is {@code null}; if this is
+	 * a possibility, use {@link #min} instead.
+	 */
+	def static <T> Optional<T> minOptional(Iterator<T> iterator, Comparator<? super T> comp) {
+		if (iterator.hasNext) {
+			var min = iterator.next
+
+			while (iterator.hasNext) {
+				val next = iterator.next
+				if (comp.compare(next, min) < 0) {
+					min = next
+				}
+			}
+
+			Optional::of(min)
+		} else {
+			Optional::absent
+		}
+	}
+
+	/**
 	 * Returns the minimum element of the given iterator based on the given {@code transformation},
 	 * according to the <i>natural ordering</i> of the values.
 	 *
@@ -365,6 +401,41 @@ final class IteratorExtensions {
 		}
 
 		min
+	}
+
+	/**
+	 * Returns an {@link Optional} containing the minimum element of this iterator based on
+	 * the given transformation, according to the <i>natural ordering</i> of the values.
+	 *
+	 * @throws NullPointerException if the min element is {@code null}; if this is
+	 * a possibility, use {@link #minBy} instead.
+	 */
+	def static <T, U extends Object & Comparable<? super U>> Optional<T> minByOptional(Iterator<T> iterator, (T) => U function) {
+		iterator.minByOptional(Ordering::natural, function)
+	}
+
+	/**
+	 * Returns an {@link Optional} containing the minimum element of this iterator based on
+	 * the given transformation, according to the order induced by the specified comparator.
+	 *
+	 * @throws NullPointerException if the min element is {@code null}; if this is
+	 * a possibility, use {@link #minBy} instead.
+	 */
+	def static <T, U> Optional<T> minByOptional(Iterator<T> iterator, Comparator<? super U> comp, (T) => U function) {
+		if (iterator.hasNext) {
+			var min = iterator.next
+
+			while (iterator.hasNext) {
+				val next = iterator.next
+				if (comp.compare(function.apply(next), function.apply(min)) < 0) {
+					min = next
+				}
+			}
+
+			Optional::of(min)
+		} else {
+			Optional::absent
+		}
 	}
 
 	/**
@@ -398,6 +469,42 @@ final class IteratorExtensions {
 	}
 
 	/**
+	 * Returns an {@link Optional} containing the maximum element of this iterator,
+	 * according to the <i>natural ordering</i> of its elements. All elements in the
+	 * iterator must implement the <tt>Comparable</tt> interface.
+	 *
+	 * @throws NullPointerException if the max element is {@code null}; if this is
+	 * a possibility, use {@link #max} instead.
+	 */
+	def static <T extends Object & Comparable<? super T>> Optional<T> maxOptional(Iterator<T> iterator) {
+		iterator.maxOptional(Ordering::natural)
+	}
+
+	/**
+	 * Returns an {@link Optional} containing the maximum element of this iterator,
+	 * according to the order induced by the specified comparator.
+	 *
+	 * @throws NullPointerException if the max element is {@code null}; if this is
+	 * a possibility, use {@link #max} instead.
+	 */
+	def static <T> Optional<T> maxOptional(Iterator<T> iterator, Comparator<? super T> comp) {
+		if (iterator.hasNext) {
+			var max = iterator.next
+
+			while (iterator.hasNext) {
+				val next = iterator.next
+				if (comp.compare(next, max) > 0) {
+					max = next
+				}
+			}
+
+			Optional::of(max)
+		} else {
+			Optional::absent
+		}
+	}
+
+	/**
 	 * Returns the maximum element of the given iterator based on the given {@code transformation},
 	 * according to the <i>natural ordering</i> of the values.
 	 *
@@ -424,6 +531,41 @@ final class IteratorExtensions {
 		}
 
 		max
+	}
+
+	/**
+	 * Returns an {@link Optional} containing the maximum element of this iterator based on
+	 * the given transformation, according to the <i>natural ordering</i> of the values.
+	 *
+	 * @throws NullPointerException if the max element is {@code null}; if this is
+	 * a possibility, use {@link #maxBy} instead.
+	 */
+	def static <T, U extends Object & Comparable<? super U>> Optional<T> maxByOptional(Iterator<T> iterator, (T) => U function) {
+		iterator.maxByOptional(Ordering::natural, function)
+	}
+
+	/**
+	 * Returns an {@link Optional} containing the maximum element of this iterator based on
+	 * the given transformation, according to the order induced by the specified comparator.
+	 *
+	 * @throws NullPointerException if the max element is {@code null}; if this is
+	 * a possibility, use {@link #maxBy} instead.
+	 */
+	def static <T, U> Optional<T> maxByOptional(Iterator<T> iterator, Comparator<? super U> comp, (T) => U function) {
+		if (iterator.hasNext) {
+			var max = iterator.next
+
+			while (iterator.hasNext) {
+				val next = iterator.next
+				if (comp.compare(function.apply(next), function.apply(max)) > 0) {
+					max = next
+				}
+			}
+
+			Optional::of(max)
+		} else {
+			Optional::absent
+		}
 	}
 
 	/**

@@ -187,6 +187,29 @@ final class IterableExtensions {
 	}
 
 	/**
+	 * Returns an {@link Optional} containing the minimum element of this iterable,
+	 * according to the <i>natural ordering</i> of its elements. All elements in the
+	 * iterable must implement the <tt>Comparable</tt> interface.
+	 *
+	 * @throws NullPointerException if the min element is {@code null}; if this is
+	 * a possibility, use {@link #min} instead.
+	 */
+	def static <T extends Object & Comparable<? super T>> Optional<T> minOptional(Iterable<T> iterable) {
+		iterable.iterator.minOptional
+	}
+
+	/**
+	 * Returns an {@link Optional} containing the minimum element of this iterable,
+	 * according to the order induced by the specified comparator.
+	 *
+	 * @throws NullPointerException if the min element is {@code null}; if this is
+	 * a possibility, use {@link #min} instead.
+	 */
+	def static <T> Optional<T> minOptional(Iterable<T> iterable, Comparator<? super T> comp) {
+		iterable.iterator.minOptional(comp)
+	}
+
+	/**
 	 * Returns the minimum element of the given iterable based on the given {@code transformation},
 	 * according to the <i>natural ordering</i> of the values.
 	 *
@@ -204,6 +227,28 @@ final class IterableExtensions {
 	 */
 	def static <T, U> T minBy(Iterable<T> iterable, Comparator<? super U> comp, (T) => U function) {
 		iterable.iterator.minBy(comp, function)
+	}
+
+	/**
+	 * Returns an {@link Optional} containing the minimum element of this iterable based on
+	 * the given transformation, according to the <i>natural ordering</i> of the values.
+	 *
+	 * @throws NullPointerException if the min element is {@code null}; if this is
+	 * a possibility, use {@link #minBy} instead.
+	 */
+	def static <T, U extends Object & Comparable<? super U>> Optional<T> minByOptional(Iterable<T> iterable, (T) => U function) {
+		iterable.iterator.minByOptional(function)
+	}
+
+	/**
+	 * Returns an {@link Optional} containing the minimum element of this iterable based on
+	 * the given transformation, according to the order induced by the specified comparator.
+	 *
+	 * @throws NullPointerException if the min element is {@code null}; if this is
+	 * a possibility, use {@link #minBy} instead.
+	 */
+	def static <T, U> Optional<T> minByOptional(Iterable<T> iterable, Comparator<? super U> comp, (T) => U function) {
+		iterable.iterator.minByOptional(comp, function)
 	}
 
 	/**
@@ -228,6 +273,29 @@ final class IterableExtensions {
 	}
 
 	/**
+	 * Returns an {@link Optional} containing the maximum element of this iterable,
+	 * according to the <i>natural ordering</i> of its elements. All elements in the
+	 * iterable must implement the <tt>Comparable</tt> interface.
+	 *
+	 * @throws NullPointerException if the max element is {@code null}; if this is
+	 * a possibility, use {@link #max} instead.
+	 */
+	def static <T extends Object & Comparable<? super T>> Optional<T> maxOptional(Iterable<T> iterable) {
+		iterable.iterator.maxOptional
+	}
+
+	/**
+	 * Returns an {@link Optional} containing the maximum element of this iterable,
+	 * according to the order induced by the specified comparator.
+	 *
+	 * @throws NullPointerException if the max element is {@code null}; if this is
+	 * a possibility, use {@link #max} instead.
+	 */
+	def static <T> Optional<T> maxOptional(Iterable<T> iterable, Comparator<? super T> comp) {
+		iterable.iterator.maxOptional(comp)
+	}
+
+	/**
 	 * Returns the maximum element of the given iterable based on the given {@code transformation},
 	 * according to the <i>natural ordering</i> of the values.
 	 *
@@ -245,6 +313,28 @@ final class IterableExtensions {
 	 */
 	def static <T, U> T maxBy(Iterable<T> iterable, Comparator<? super U> comp, (T) => U function) {
 		iterable.iterator.maxBy(comp, function)
+	}
+
+	/**
+	 * Returns an {@link Optional} containing the maximum element of this iterable based on
+	 * the given transformation, according to the <i>natural ordering</i> of the values.
+	 *
+	 * @throws NullPointerException if the max element is {@code null}; if this is
+	 * a possibility, use {@link #maxBy} instead.
+	 */
+	def static <T, U extends Object & Comparable<? super U>> Optional<T> maxByOptional(Iterable<T> iterable, (T) => U function) {
+		iterable.iterator.maxByOptional(function)
+	}
+
+	/**
+	 * Returns an {@link Optional} containing the maximum element of this iterable based on
+	 * the given transformation, according to the order induced by the specified comparator.
+	 *
+	 * @throws NullPointerException if the max element is {@code null}; if this is
+	 * a possibility, use {@link #maxBy} instead.
+	 */
+	def static <T, U> Optional<T> maxByOptional(Iterable<T> iterable, Comparator<? super U> comp, (T) => U function) {
+		iterable.iterator.maxByOptional(comp, function)
 	}
 
 	/**
