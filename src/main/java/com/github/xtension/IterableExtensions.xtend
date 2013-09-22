@@ -570,6 +570,13 @@ final class IterableExtensions {
 	}
 
 	/**
+	 * Checks if the other iterable contains the same elements in the same order as this iterable.
+	 */
+	def static <T> boolean sameElements(Iterable<T> iterable, Iterable<T> other) {
+		iterable.iterator.sameElements(other.iterator)
+	}
+
+	/**
 	 * Sums up the elements of this iterable.
 	 */
 	@Beta
