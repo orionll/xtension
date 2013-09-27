@@ -193,15 +193,6 @@ class TestIterableExtensions {
 	}
 
 	@Test
-	def void sameElements() {
-		assertThat(#[].sameElements(#[])).isTrue
-		assertThat(#[1,2,3].sameElements(#[1,2,3])).isTrue
-		assertThat(#[1,2,3].sameElements(#[1,3,2])).isFalse
-		assertThat(#[1,2,3].sameElements(#[1,2,3,4])).isFalse
-		assertThat(#[1,2,3,4].sameElements(#[1,2,3])).isFalse
-	}
-
-	@Test
 	def void sumInt() {
 		assertThat(#[1,2,3].sumInt).isEqualTo(6)
 	}

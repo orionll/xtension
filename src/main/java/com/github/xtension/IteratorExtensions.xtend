@@ -569,19 +569,6 @@ final class IteratorExtensions {
 	}
 
 	/**
-	 * Checks if the other iterator contains the same elements in the same order as this iterator.
-	 */
-	def static <T> boolean sameElements(Iterator<T> iterator, Iterator<T> other) {
-		while (iterator.hasNext && other.hasNext) {
-			if (iterator.next != other.next) {
-				return false
-			}
-		}
-
-		!iterator.hasNext && !other.hasNext
-	}
-
-	/**
 	 * Sums up the elements of this iterator.
 	 */
 	@Beta
